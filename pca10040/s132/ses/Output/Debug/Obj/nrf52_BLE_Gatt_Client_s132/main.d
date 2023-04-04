@@ -82,10 +82,6 @@ Output/Debug/Obj/nrf52_BLE_Gatt_Client_s132/main.o: \
  c:\nrf_sdk\components\softdevice\s132\headers\nrf_soc.h \
  c:\nrf_sdk\modules\nrfx\drivers\nrfx_errors.h \
  c:\nrf_sdk\components\boards\pca10040.h \
- c:\nrf_sdk\components\libraries\bsp\bsp.h \
- c:\nrf_sdk\components\libraries\button\app_button.h \
- c:\nrf_sdk\components\libraries\bsp\bsp_btn_ble.h \
- c:\nrf_sdk\components\libraries\bsp\bsp.h \
  c:\nrf_sdk\components\softdevice\s132\headers\ble_hci.h \
  c:\nrf_sdk\components\ble\ble_advertising\ble_advertising.h \
  c:\nrf_sdk\components\softdevice\s132\headers\ble_gap.h \

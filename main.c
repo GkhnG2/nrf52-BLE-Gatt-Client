@@ -52,8 +52,8 @@
 #include "nrf_pwr_mgmt.h"
 #include "app_timer.h"
 #include "boards.h"
-#include "bsp.h"
-#include "bsp_btn_ble.h"
+//#include "bsp.h"
+//#include "bsp_btn_ble.h"
 #include "ble.h"
 #include "ble_hci.h"
 #include "ble_advertising.h"
@@ -69,9 +69,9 @@
 #include "nrf_log_default_backends.h"
 
 
-#define CENTRAL_SCANNING_LED            BSP_BOARD_LED_0                     /**< Scanning LED will be on when the device is scanning. */
-#define CENTRAL_CONNECTED_LED           BSP_BOARD_LED_1                     /**< Connected LED will be on when the device is connected. */
-#define LEDBUTTON_LED                   BSP_BOARD_LED_2                     /**< LED to indicate a change of state of the the Button characteristic on the peer. */
+//#define CENTRAL_SCANNING_LED            BSP_BOARD_LED_0                     /**< Scanning LED will be on when the device is scanning. */
+//#define CENTRAL_CONNECTED_LED           BSP_BOARD_LED_1                     /**< Connected LED will be on when the device is connected. */
+//#define LEDBUTTON_LED                   BSP_BOARD_LED_2                     /**< LED to indicate a change of state of the the Button characteristic on the peer. */
 
 #define SCAN_INTERVAL                   0x00A0                              /**< Determines scan interval in units of 0.625 millisecond. */
 #define SCAN_WINDOW                     0x0050                              /**< Determines scan window in units of 0.625 millisecond. */
@@ -89,6 +89,10 @@
 #define APP_BLE_OBSERVER_PRIO           3                                   /**< Application's BLE observer priority. You shouldn't need to modify this value. */
 
 #define RING_TIMER_INTERVAL            APP_TIMER_TICKS(3000)                /**< RING Timer interval (ticks). */
+
+#define LED_BLUE  22
+#define LED_RED   25
+#define LED_GREEN NRF_GPIO_PIN_MAP(1,4)
 
 NRF_BLE_SCAN_DEF(m_scan);                                       /**< Scanning module instance. */
 //BLE_LBS_C_DEF(m_ble_lbs_c);                                     /**< Main structure used by the LBS client module. */
@@ -123,15 +127,6 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
 }
 
 
-/**@brief Function for handling the LED Button Service client errors.
- *
- * @param[in]   nrf_error   Error code containing information about what went wrong.
- */
-/*static void lbs_error_handler(uint32_t nrf_error)
-{
-    APP_ERROR_HANDLER(nrf_error);
-}*/
-
 static void nus_error_handler(uint32_t nrf_error)
 {
     APP_ERROR_HANDLER(nrf_error);
@@ -144,7 +139,16 @@ static void nus_error_handler(uint32_t nrf_error)
  */
 static void leds_init(void)
 {
-    bsp_board_init(BSP_INIT_LEDS);
+    //bsp_board_init(BSP_INIT_LEDS);
+
+    nrf_gpio_cfg_output(LED_BLUE);       // Initialize the LED
+    nrf_gpio_pin_set(LED_BLUE);          // turn off LED
+
+    nrf_gpio_cfg_output(LED_RED);        // Initialize the LED
+    nrf_gpio_pin_set(LED_RED);           // turn off LED
+
+    nrf_gpio_cfg_output(LED_GREEN);      // Initialize the LED
+    nrf_gpio_pin_set(LED_GREEN);         // turn off LED
 }
 
 
@@ -157,52 +161,9 @@ static void scan_start(void)
     err_code = nrf_ble_scan_start(&m_scan);
     APP_ERROR_CHECK(err_code);
 
-    bsp_board_led_off(CENTRAL_CONNECTED_LED);
-    bsp_board_led_on(CENTRAL_SCANNING_LED);
+    //bsp_board_led_off(CENTRAL_CONNECTED_LED);
+    //bsp_board_led_on(CENTRAL_SCANNING_LED);
 }
-
-
-/**@brief Handles events coming from the LED Button central module.
- */
-/*static void lbs_c_evt_handler(ble_lbs_c_t * p_lbs_c, ble_lbs_c_evt_t * p_lbs_c_evt)
-{
-    switch (p_lbs_c_evt->evt_type)
-    {
-        case BLE_LBS_C_EVT_DISCOVERY_COMPLETE:
-        {
-            ret_code_t err_code;
-
-            err_code = ble_lbs_c_handles_assign(&m_ble_lbs_c,
-                                                p_lbs_c_evt->conn_handle,
-                                                &p_lbs_c_evt->params.peer_db);
-            NRF_LOG_INFO("LED Button service discovered on conn_handle 0x%x.", p_lbs_c_evt->conn_handle);
-
-            err_code = app_button_enable();
-            APP_ERROR_CHECK(err_code);
-
-            // LED Button service discovered. Enable notification of Button.
-            err_code = ble_lbs_c_button_notif_enable(p_lbs_c);
-            APP_ERROR_CHECK(err_code);
-        } break; // BLE_LBS_C_EVT_DISCOVERY_COMPLETE
-
-        case BLE_LBS_C_EVT_BUTTON_NOTIFICATION:
-        {
-            NRF_LOG_INFO("Button state changed on peer to 0x%x.", p_lbs_c_evt->params.button.button_state);
-            if (p_lbs_c_evt->params.button.button_state)
-            {
-                bsp_board_led_on(LEDBUTTON_LED);
-            }
-            else
-            {
-                bsp_board_led_off(LEDBUTTON_LED);
-            }
-        } break; // BLE_LBS_C_EVT_BUTTON_NOTIFICATION
-
-        default:
-            // No implementation needed.
-            break;
-    }
-}*/
 
 
 static void ble_nus_c_evt_handler(ble_nus_c_t * p_ble_nus_c, const ble_nus_c_evt_t * p_evt)
@@ -251,16 +212,14 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
         case BLE_GAP_EVT_CONNECTED:
         {
             NRF_LOG_INFO("Connected.");
-            /*err_code = ble_lbs_c_handles_assign(&m_ble_lbs_c, p_gap_evt->conn_handle, NULL);
-            APP_ERROR_CHECK(err_code);*/
 
             err_code = ble_db_discovery_start(&m_db_disc, p_gap_evt->conn_handle);
             APP_ERROR_CHECK(err_code);
 
             // Update LEDs status, and check if we should be looking for more
             // peripherals to connect to.
-            bsp_board_led_on(CENTRAL_CONNECTED_LED);
-            bsp_board_led_off(CENTRAL_SCANNING_LED);
+            //bsp_board_led_on(CENTRAL_CONNECTED_LED);
+            //bsp_board_led_off(CENTRAL_SCANNING_LED);
         } break;
 
         // Upon disconnection, reset the connection handle of the peer which disconnected, update
@@ -325,22 +284,6 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
 }
 
 
-/**@brief LED Button client initialization.
- */
-/*static void lbs_c_init(void)
-{
-    ret_code_t       err_code;
-    ble_lbs_c_init_t lbs_c_init_obj;
-
-    lbs_c_init_obj.evt_handler   = lbs_c_evt_handler;
-    lbs_c_init_obj.p_gatt_queue  = &m_ble_gatt_queue;
-    lbs_c_init_obj.error_handler = lbs_error_handler;
-
-    err_code = ble_lbs_c_init(&m_ble_lbs_c, &lbs_c_init_obj);
-    APP_ERROR_CHECK(err_code);
-}*/
-
-
 static void nus_client_init(void)
 {
     ret_code_t       err_code;
@@ -388,31 +331,20 @@ static void ble_stack_init(void)
  * @param[in] pin_no        The pin that the event applies to.
  * @param[in] button_action The button action (press/release).
  */
-static void button_event_handler(uint8_t pin_no, uint8_t button_action)
+/*static void button_event_handler(uint8_t pin_no, uint8_t button_action)
 {
     ret_code_t err_code;
 
     switch (pin_no)
     {
         case LEDBUTTON_BUTTON_PIN:
-            /*err_code = ble_lbs_led_status_send(&m_ble_lbs_c, button_action);
-            if (err_code != NRF_SUCCESS &&
-                err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
-                err_code != NRF_ERROR_INVALID_STATE)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
-            if (err_code == NRF_SUCCESS)
-            {
-                NRF_LOG_INFO("LBS write LED state %d", button_action);
-            }*/
             break;
 
         default:
             APP_ERROR_HANDLER(pin_no);
             break;
     }
-}
+}*/
 
 
 /**@brief Function for handling Scaning events.
@@ -438,7 +370,7 @@ static void scan_evt_handler(scan_evt_t const * p_scan_evt)
 
 /**@brief Function for initializing the button handler module.
  */
-static void buttons_init(void)
+/*static void buttons_init(void)
 {
     ret_code_t err_code;
 
@@ -451,7 +383,7 @@ static void buttons_init(void)
     err_code = app_button_init(buttons, ARRAY_SIZE(buttons),
                                BUTTON_DETECTION_DELAY);
     APP_ERROR_CHECK(err_code);
-}
+}*/
 
 
 /**@brief Function for handling database discovery events.
@@ -464,7 +396,6 @@ static void buttons_init(void)
  */
 static void db_disc_handler(ble_db_discovery_evt_t * p_evt)
 {
-    //ble_lbs_on_db_disc_evt(&m_ble_lbs_c, p_evt);
     ble_nus_c_on_db_disc_evt(&m_nus_c, p_evt);  
 }
 
@@ -594,23 +525,22 @@ int main(void)
 {
     // Initialize.
     log_init();
-    timer_init();
+    timer_init(); 
     leds_init();
-    buttons_init();
+    //buttons_init();
     power_management_init();
     ble_stack_init();
     scan_init();
     gatt_init();
     db_discovery_init();
-    //lbs_c_init();
     nus_client_init();
 
     // Start execution.
-    NRF_LOG_INFO("Blinky CENTRAL example started."); 
+    NRF_LOG_INFO("Gatt Client CENTRAL example started."); 
     scan_start();
 
     // Turn on the LED to signal scanning.
-    bsp_board_led_on(CENTRAL_SCANNING_LED);
+    //bsp_board_led_on(CENTRAL_SCANNING_LED);
 
     application_timers_start();
 

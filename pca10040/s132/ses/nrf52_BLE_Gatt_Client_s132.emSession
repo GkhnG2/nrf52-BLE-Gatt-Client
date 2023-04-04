@@ -42,7 +42,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="590" useTextEdit="1" path="../../../main.c" left="0" selected="1" top="579" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="48" y="244" useTextEdit="1" path="../../../main.c" left="0" selected="1" top="237" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="48" y="15" useTextEdit="1" path="flash_placement.xml" left="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="8" y="76" useTextEdit="1" openedFrom="C:/nrf_sdk/examples/ble_central/ble_app_blinky_c/main.c" path="../../../../../../components/ble/nrf_ble_scan/nrf_ble_scan.h" left="0" top="55" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="209" useTextEdit="1" openedFrom="C:/nrf_sdk/examples/myProjects/18 ble_app_blinky_c/main.c" path="../../../../../../components/boards/boards.c" left="0" top="185" codecName="Default"/>
