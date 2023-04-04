@@ -250,8 +250,8 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
         // discovery, update LEDs status and resume scanning if necessary. */
         case BLE_GAP_EVT_CONNECTED:
         {
-            /*NRF_LOG_INFO("Connected.");
-            err_code = ble_lbs_c_handles_assign(&m_ble_lbs_c, p_gap_evt->conn_handle, NULL);
+            NRF_LOG_INFO("Connected.");
+            /*err_code = ble_lbs_c_handles_assign(&m_ble_lbs_c, p_gap_evt->conn_handle, NULL);
             APP_ERROR_CHECK(err_code);*/
 
             err_code = ble_db_discovery_start(&m_db_disc, p_gap_evt->conn_handle);
@@ -606,7 +606,7 @@ int main(void)
     nus_client_init();
 
     // Start execution.
-    NRF_LOG_INFO("Blinky CENTRAL example started.");
+    NRF_LOG_INFO("Blinky CENTRAL example started."); 
     scan_start();
 
     // Turn on the LED to signal scanning.
