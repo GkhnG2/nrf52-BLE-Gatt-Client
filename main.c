@@ -52,8 +52,6 @@
 #include "nrf_pwr_mgmt.h"
 #include "app_timer.h"
 #include "boards.h"
-//#include "bsp.h"
-//#include "bsp_btn_ble.h"
 #include "ble.h"
 #include "ble_hci.h"
 #include "ble_advertising.h"
@@ -67,11 +65,6 @@
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
-
-
-//#define CENTRAL_SCANNING_LED            BSP_BOARD_LED_0                     /**< Scanning LED will be on when the device is scanning. */
-//#define CENTRAL_CONNECTED_LED           BSP_BOARD_LED_1                     /**< Connected LED will be on when the device is connected. */
-//#define LEDBUTTON_LED                   BSP_BOARD_LED_2                     /**< LED to indicate a change of state of the the Button characteristic on the peer. */
 
 #define SCAN_INTERVAL                   0x00A0                              /**< Determines scan interval in units of 0.625 millisecond. */
 #define SCAN_WINDOW                     0x0050                              /**< Determines scan window in units of 0.625 millisecond. */
@@ -95,7 +88,6 @@
 #define LED_GREEN NRF_GPIO_PIN_MAP(1,4)
 
 NRF_BLE_SCAN_DEF(m_scan);                                       /**< Scanning module instance. */
-//BLE_LBS_C_DEF(m_ble_lbs_c);                                     /**< Main structure used by the LBS client module. */
 BLE_NUS_C_DEF(m_nus_c);
 NRF_BLE_GATT_DEF(m_gatt);                                       /**< GATT module instance. */
 BLE_DB_DISCOVERY_DEF(m_db_disc);                                /**< DB discovery module instance. */
@@ -139,8 +131,6 @@ static void nus_error_handler(uint32_t nrf_error)
  */
 static void leds_init(void)
 {
-    //bsp_board_init(BSP_INIT_LEDS);
-
     nrf_gpio_cfg_output(LED_BLUE);       // Initialize the LED
     nrf_gpio_pin_set(LED_BLUE);          // turn off LED
 
@@ -160,9 +150,6 @@ static void scan_start(void)
 
     err_code = nrf_ble_scan_start(&m_scan);
     APP_ERROR_CHECK(err_code);
-
-    //bsp_board_led_off(CENTRAL_CONNECTED_LED);
-    //bsp_board_led_on(CENTRAL_SCANNING_LED);
 }
 
 
@@ -215,11 +202,6 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
 
             err_code = ble_db_discovery_start(&m_db_disc, p_gap_evt->conn_handle);
             APP_ERROR_CHECK(err_code);
-
-            // Update LEDs status, and check if we should be looking for more
-            // peripherals to connect to.
-            //bsp_board_led_on(CENTRAL_CONNECTED_LED);
-            //bsp_board_led_off(CENTRAL_SCANNING_LED);
         } break;
 
         // Upon disconnection, reset the connection handle of the peer which disconnected, update
@@ -326,27 +308,6 @@ static void ble_stack_init(void)
 }
 
 
-/**@brief Function for handling events from the button handler module.
- *
- * @param[in] pin_no        The pin that the event applies to.
- * @param[in] button_action The button action (press/release).
- */
-/*static void button_event_handler(uint8_t pin_no, uint8_t button_action)
-{
-    ret_code_t err_code;
-
-    switch (pin_no)
-    {
-        case LEDBUTTON_BUTTON_PIN:
-            break;
-
-        default:
-            APP_ERROR_HANDLER(pin_no);
-            break;
-    }
-}*/
-
-
 /**@brief Function for handling Scaning events.
  *
  * @param[in]   p_scan_evt   Scanning event.
@@ -365,25 +326,6 @@ static void scan_evt_handler(scan_evt_t const * p_scan_evt)
           break;
     }
 }
-
-
-
-/**@brief Function for initializing the button handler module.
- */
-/*static void buttons_init(void)
-{
-    ret_code_t err_code;
-
-    //The array must be static because a pointer to it will be saved in the button handler module.
-    static app_button_cfg_t buttons[] =
-    {
-        {LEDBUTTON_BUTTON_PIN, false, BUTTON_PULL, button_event_handler}
-    };
-
-    err_code = app_button_init(buttons, ARRAY_SIZE(buttons),
-                               BUTTON_DETECTION_DELAY);
-    APP_ERROR_CHECK(err_code);
-}*/
 
 
 /**@brief Function for handling database discovery events.
@@ -450,7 +392,7 @@ static void timer_init(void)
     ret_code_t err_code = app_timer_init();
     APP_ERROR_CHECK(err_code);
 
-    // Create timers.
+    // Create timer.
     err_code = app_timer_create(&ring_timer_id,
                                 APP_TIMER_MODE_REPEATED,
                                 ring_tasks_timeout_handler);
@@ -527,7 +469,6 @@ int main(void)
     log_init();
     timer_init(); 
     leds_init();
-    //buttons_init();
     power_management_init();
     ble_stack_init();
     scan_init();
@@ -538,9 +479,6 @@ int main(void)
     // Start execution.
     NRF_LOG_INFO("Gatt Client CENTRAL example started."); 
     scan_start();
-
-    // Turn on the LED to signal scanning.
-    //bsp_board_led_on(CENTRAL_SCANNING_LED);
 
     application_timers_start();
 
