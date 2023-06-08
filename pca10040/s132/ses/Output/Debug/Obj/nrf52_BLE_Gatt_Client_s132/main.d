@@ -110,4 +110,10 @@ Output/Debug/Obj/nrf52_BLE_Gatt_Client_s132/main.o: \
  c:\nrf_sdk\components\libraries\log\nrf_log_ctrl.h \
  c:\nrf_sdk\components\libraries\log\src\nrf_log_ctrl_internal.h \
  c:\nrf_sdk\components\libraries\log\nrf_log_backend_interface.h \
- c:\nrf_sdk\components\libraries\log\nrf_log_default_backends.h
+ c:\nrf_sdk\components\libraries\log\nrf_log_default_backends.h \
+ c:\nrf_sdk\components\ble\peer_manager\peer_manager.h \
+ c:\nrf_sdk\components\ble\peer_manager\peer_manager_types.h \
+ c:\nrf_sdk\components\ble\peer_manager\peer_database.h \
+ c:\nrf_sdk\components\ble\peer_manager\peer_manager_internal.h \
+ c:\nrf_sdk\components\ble\peer_manager\peer_manager_handler.h \
+ c:\nrf_sdk\components\ble\peer_manager\peer_manager.h

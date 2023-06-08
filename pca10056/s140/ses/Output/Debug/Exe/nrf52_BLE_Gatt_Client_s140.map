@@ -16985,48 +16985,48 @@ Linker script and memory map
  .rodata.ring_timer_id
                 0x0000000000032a30        0x4 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/main.o
  .rodata.m_target_periph_name
-                0x0000000000032a34        0x7 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/main.o
- *fill*         0x0000000000032a3b        0x1 
- .rodata        0x0000000000032a3c       0x32 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/ble_conn_state.o
- *fill*         0x0000000000032a6e        0x2 
- .rodata        0x0000000000032a70      0x116 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/ble_db_discovery.o
- *fill*         0x0000000000032b86        0x2 
- .rodata        0x0000000000032b88      0x157 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_ble_gatt.o
- *fill*         0x0000000000032cdf        0x1 
- .rodata        0x0000000000032ce0       0x73 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_ble_gq.o
- *fill*         0x0000000000032d53        0x1 
+                0x0000000000032a34        0x9 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/main.o
+ *fill*         0x0000000000032a3d        0x3 
+ .rodata        0x0000000000032a40       0x32 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/ble_conn_state.o
+ *fill*         0x0000000000032a72        0x2 
+ .rodata        0x0000000000032a74      0x116 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/ble_db_discovery.o
+ *fill*         0x0000000000032b8a        0x2 
+ .rodata        0x0000000000032b8c      0x157 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_ble_gatt.o
+ *fill*         0x0000000000032ce3        0x1 
+ .rodata        0x0000000000032ce4       0x73 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_ble_gq.o
+ *fill*         0x0000000000032d57        0x1 
  .rodata.m_req_data_alloc
-                0x0000000000032d54       0x18 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_ble_gq.o
- .rodata        0x0000000000032d6c       0x68 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_ble_scan.o
- .rodata        0x0000000000032dd4       0x1c Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/ble_lbs_c.o
- .rodata        0x0000000000032df0       0x4b Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/ble_nus_c.o
- *fill*         0x0000000000032e3b        0x1 
- .rodata        0x0000000000032e3c       0x3b Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_drv_clock.o
- *fill*         0x0000000000032e77        0x1 
- .rodata        0x0000000000032e78       0x32 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_drv_uart.o
- *fill*         0x0000000000032eaa        0x2 
- .rodata        0x0000000000032eac       0x61 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_clock.o
- *fill*         0x0000000000032f0d        0x3 
- .rodata        0x0000000000032f10       0x92 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_gpiote.o
- *fill*         0x0000000000032fa2        0x2 
- .rodata        0x0000000000032fa4       0x37 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_prs.o
- *fill*         0x0000000000032fdb        0x1 
- .rodata        0x0000000000032fdc       0x88 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_uart.o
+                0x0000000000032d58       0x18 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_ble_gq.o
+ .rodata        0x0000000000032d70       0x68 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_ble_scan.o
+ .rodata        0x0000000000032dd8       0x1c Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/ble_lbs_c.o
+ .rodata        0x0000000000032df4       0x4b Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/ble_nus_c.o
+ *fill*         0x0000000000032e3f        0x1 
+ .rodata        0x0000000000032e40       0x3b Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_drv_clock.o
+ *fill*         0x0000000000032e7b        0x1 
+ .rodata        0x0000000000032e7c       0x32 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrf_drv_uart.o
+ *fill*         0x0000000000032eae        0x2 
+ .rodata        0x0000000000032eb0       0x61 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_clock.o
+ *fill*         0x0000000000032f11        0x3 
+ .rodata        0x0000000000032f14       0x92 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_gpiote.o
+ *fill*         0x0000000000032fa6        0x2 
+ .rodata        0x0000000000032fa8       0x37 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_prs.o
+ *fill*         0x0000000000032fdf        0x1 
+ .rodata        0x0000000000032fe0       0x88 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_uart.o
  .rodata.irq_handlers.0
-                0x0000000000033064        0x4 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_uart.o
- .rodata        0x0000000000033068       0x89 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_uarte.o
- *fill*         0x00000000000330f1        0x3 
+                0x0000000000033068        0x4 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_uart.o
+ .rodata        0x000000000003306c       0x89 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_uarte.o
+ *fill*         0x00000000000330f5        0x3 
  .rodata.irq_handlers.0
-                0x00000000000330f4        0x4 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_uarte.o
- .rodata        0x00000000000330f8       0x40 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/app_button.o
- .rodata        0x0000000000033138       0xb4 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/app_error_weak.o
- .rodata        0x00000000000331ec       0x44 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/app_timer2.o
+                0x00000000000330f8        0x4 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/nrfx_uarte.o
+ .rodata        0x00000000000330fc       0x40 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/app_button.o
+ .rodata        0x000000000003313c       0xb4 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/app_error_weak.o
+ .rodata        0x00000000000331f0       0x44 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/app_timer2.o
  .rodata.m_app_timer_sortlist
-                0x0000000000033230        0xc Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/app_timer2.o
- .rodata        0x000000000003323c       0x39 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/app_util_platform.o
- *fill*         0x0000000000033275        0x3 
- .rodata        0x0000000000033278       0xcc Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/drv_rtc.o
- *fill*         0x0000000000033344        0xc 
+                0x0000000000033234        0xc Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/app_timer2.o
+ .rodata        0x0000000000033240       0x39 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/app_util_platform.o
+ *fill*         0x0000000000033279        0x3 
+ .rodata        0x000000000003327c       0xcc Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/drv_rtc.o
+ *fill*         0x0000000000033348        0x8 
  .rodata.delay_machine_code.0
                 0x0000000000033350        0x6 Output/Debug/Obj/nrf52_BLE_Gatt_Client_s140/drv_rtc.o
  *fill*         0x0000000000033356        0x2 

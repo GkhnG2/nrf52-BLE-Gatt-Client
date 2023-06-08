@@ -38,7 +38,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="141" useTextEdit="1" path="../../../main.c" left="0" selected="1" top="147" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="23" y="91" useTextEdit="1" path="../../../main.c" left="0" selected="1" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="27" y="651" useTextEdit="1" path="../config/sdk_config.h" left="0" top="626" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="63" useTextEdit="1" openedFrom="C:/nrf_sdk/examples/myProjects/18 nrf52 BLE Gatt Client/main.c" path="../../../../../../components/boards/boards.c" left="0" top="42" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="340" useTextEdit="1" openedFrom="C:/nrf_sdk/examples/myProjects/18 nrf52 BLE Gatt Client/main.c" path="../../../../../../components/libraries/pwr_mgmt/nrf_pwr_mgmt.c" left="0" top="319" codecName="Default"/>

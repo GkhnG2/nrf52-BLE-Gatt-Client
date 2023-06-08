@@ -66,6 +66,20 @@
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
 
+///////////Added for bonding//////////
+#include "peer_manager.h"
+#include "peer_manager_handler.h"
+
+#define SEC_PARAM_BOND              1                                   /**< Perform bonding. */
+#define SEC_PARAM_MITM              1                                   /**< Enable MITM protection */
+#define SEC_PARAM_LESC              0                                   /**< LE Secure Connections not enabled. */
+#define SEC_PARAM_KEYPRESS          0                                   /**< Keypress notifications not enabled. */
+#define SEC_PARAM_IO_CAPABILITIES   BLE_GAP_IO_CAPS_KEYBOARD_ONLY       /**< Keyboard Only. */
+#define SEC_PARAM_OOB               0                                   /**< Out Of Band data not available. */
+#define SEC_PARAM_MIN_KEY_SIZE      7                                   /**< Minimum encryption key size. */
+#define SEC_PARAM_MAX_KEY_SIZE      16                                  /**< Maximum encryption key size. */
+//////////////Added for bonding///////
+
 #define SCAN_INTERVAL                   0x00A0                              /**< Determines scan interval in units of 0.625 millisecond. */
 #define SCAN_WINDOW                     0x0050                              /**< Determines scan window in units of 0.625 millisecond. */
 #define SCAN_DURATION                   0x0000                              /**< Timout when scanning. 0x0000 disables timeout. */
@@ -85,7 +99,8 @@
 
 #define LED_BLUE  22
 #define LED_RED   25
-#define LED_GREEN NRF_GPIO_PIN_MAP(1,4)
+#define LED_GREEN 26
+//#define LED_GREEN NRF_GPIO_PIN_MAP(1,4)
 
 NRF_BLE_SCAN_DEF(m_scan);                                       /**< Scanning module instance. */
 BLE_NUS_C_DEF(m_nus_c);
@@ -96,7 +111,16 @@ NRF_BLE_GQ_DEF(m_ble_gatt_queue,                                /**< BLE GATT Qu
                NRF_BLE_GQ_QUEUE_SIZE);
 APP_TIMER_DEF(ring_timer_id);                                   /**< ring timer. */            
 
-static char const m_target_periph_name[] = "Jasper";     /**< Name of the device we try to connect to. This name is searched in the scan report data*/
+static char const m_target_periph_name[] = "CPAP 001";     /**< Name of the device we try to connect to. This name is searched in the scan report data*/
+
+////////////Added for bonding///////////
+// Static passkey
+#define STATIC_PASSKEY    "123456"
+static ble_opt_t    m_static_pin_option;
+uint8_t passkey[] = STATIC_PASSKEY; 
+////////////Added for bonding///////////
+
+static ble_opt_t  m_static_pin_option;
 
 uint8_t  stringTest[20] = "FFFFFFFFFFFFFFFFFFFF"; 
 uint8_t testCNTR = 1;
@@ -241,6 +265,21 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
             APP_ERROR_CHECK(err_code);
         } break;
 
+        case BLE_GAP_EVT_SEC_REQUEST:
+        {
+            // Respond to the passkey request
+            //sd_ble_gap_auth_key_reply(p_ble_evt->evt.gap_evt.conn_handle, BLE_GAP_AUTH_KEY_TYPE_PASSKEY, (uint8_t *)PASSKEY);
+            break;
+        }
+
+        case BLE_GAP_EVT_AUTH_KEY_REQUEST:
+        {
+             err_code = sd_ble_gap_auth_key_reply(p_gap_evt->conn_handle, BLE_GAP_AUTH_KEY_TYPE_PASSKEY, &passkey[0]);
+             NRF_LOG_DEBUG("PASSKEY!!!");
+             APP_ERROR_CHECK(err_code);
+           
+        } break;
+
         case BLE_GATTC_EVT_TIMEOUT:
         {
             // Disconnect on GATT Client timeout event.
@@ -305,6 +344,20 @@ static void ble_stack_init(void)
 
     // Register a handler for BLE events.
     NRF_SDH_BLE_OBSERVER(m_ble_observer, APP_BLE_OBSERVER_PRIO, ble_evt_handler, NULL);
+
+    /*// Set GAP parameters
+    ble_gap_conn_sec_mode_t sec_mode;
+    //sec_mode.sm = 1;
+    //sec_mode.lv = 1;
+
+    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
+
+    sd_ble_gap_device_name_set(&sec_mode, NULL, NULL);
+
+    uint8_t passkey[] = PASSKEY;
+    m_static_pin_option.gap_opt.passkey.p_passkey = passkey;
+    err_code =  sd_ble_opt_set(BLE_GAP_OPT_PASSKEY, &m_static_pin_option);
+    APP_ERROR_CHECK(err_code);*/
 }
 
 
@@ -356,6 +409,30 @@ static void ring_tasks_timeout_handler(void * p_context)
     if(testCNTR==255)
       testCNTR = 1;
 }
+
+
+///////////Added for bonding///////////
+/**@brief Function for handling Peer Manager events.
+ *
+ * @param[in] p_evt  Peer Manager event.
+ */
+static void pm_evt_handler(pm_evt_t const * p_evt)
+{
+    pm_handler_on_pm_evt(p_evt);
+    pm_handler_disconnect_on_sec_failure(p_evt);
+    pm_handler_flash_clean(p_evt);
+
+    switch (p_evt->evt_id)
+    {
+        case PM_EVT_PEERS_DELETE_SUCCEEDED:
+            scan_start();
+            break;
+
+        default:
+            break;
+    }
+}
+/////////////Added for bonding/////////////
 
 
 /**@brief Database discovery initialization.
@@ -452,6 +529,44 @@ static void gatt_init(void)
 }
 
 
+//////////////Added for bonding//////////////
+/**@brief Function for initializing the Peer Manager.
+ *
+ * @param[in] erase_bonds  Indicates whether the bonding information must be cleared from
+ *                         persistent storage during the initialization of the Peer Manager.
+ */
+static void peer_manager_init()
+{
+    ret_code_t           err_code;
+    ble_gap_sec_params_t sec_param;
+
+    err_code = pm_init();
+    APP_ERROR_CHECK(err_code);
+
+    err_code = pm_register(pm_evt_handler);
+    APP_ERROR_CHECK(err_code);
+
+    memset(&sec_param, 0, sizeof(ble_gap_sec_params_t));
+    // Security parameters to be used for all security procedures.
+    sec_param.bond           = SEC_PARAM_BOND;
+    sec_param.mitm           = SEC_PARAM_MITM;
+    sec_param.lesc           = SEC_PARAM_LESC;
+    sec_param.keypress       = SEC_PARAM_KEYPRESS;
+    sec_param.io_caps        = SEC_PARAM_IO_CAPABILITIES;
+    sec_param.oob            = SEC_PARAM_OOB;
+    sec_param.min_key_size   = SEC_PARAM_MIN_KEY_SIZE;
+    sec_param.max_key_size   = SEC_PARAM_MAX_KEY_SIZE;
+    sec_param.kdist_own.enc  = 1;
+    sec_param.kdist_own.id   = 1;
+    sec_param.kdist_peer.enc = 1;
+    sec_param.kdist_peer.id  = 1;
+
+    err_code = pm_sec_params_set(&sec_param);
+    APP_ERROR_CHECK(err_code);
+}
+//////////////Added for bonding//////////////
+
+
 /**@brief Function for handling the idle state (main loop).
  *
  * @details Handle any pending log operation(s), then sleep until the next event occurs.
@@ -475,6 +590,10 @@ int main(void)
     gatt_init();
     db_discovery_init();
     nus_client_init();
+
+    ///////Added for bonding/////////////
+    peer_manager_init();
+    ///////Added for bonding/////////////
 
     // Start execution.
     NRF_LOG_INFO("Gatt Client CENTRAL example started."); 
